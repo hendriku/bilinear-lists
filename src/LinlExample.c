@@ -13,6 +13,8 @@ typedef struct lList {
 	int size;
 } lList;
 
+void reverse_list(lList*);
+void clear_list(lList*);
 void print_element(lListElement*);
 void print_list(lList*);
 void push_back(lList*, lListElement*);
@@ -34,21 +36,35 @@ int main(void) {
 	push_back(liste, e2);
 	push_back (liste, e3);
 
+	reverse_list(liste);
+
 	printf("Filled list\nSize: %d\n", liste->size);
 
 	print_list(liste);
 
-	remove_index(liste, 0);
-	remove_index(liste, 0);
-	remove_index(liste, 0);
-
-	printf("Cleared list\nSize: %d\n", liste->size);
-
-	print_list(liste);
+	clear_list(liste);
+	free(liste);
 
 	system("pause");
 
 	return 0;
+}
+
+void reverse_list(lList* l) {
+	lListElement* root = l->first;
+	lListElement* new_root = 0;
+	while (root) {
+	   lListElement* next = root->after;
+	   root->after = new_root;
+	   new_root = root;
+	   root = next;
+	}
+	l->last = l->first;
+	l->first = new_root;
+}
+
+void clear_list(lList* l) {
+	while(l->size) remove_index(l, 0);
 }
 
 void print_element(lListElement* e) {
